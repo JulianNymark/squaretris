@@ -63,6 +63,8 @@ void inputGameOver(){
     case P1_DROP:
 	break;
     case P1_EXTRA_BUTTON:
+	// submit highscore
+	System.out.printf("%d 0%n", p1.score*p1.level);
 	exit();
 	break;
     case P1_UP:

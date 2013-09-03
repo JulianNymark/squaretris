@@ -7,6 +7,8 @@ int game_state; // 0 = main_menu, 1 = game, 2 = game_over
 boolean init_state; // set when changing state!
 
 void setup(){
+    initialize();
+
     size(SCREEN_W,SCREEN_H);
   
     game_grid = new GameGrid();
@@ -146,9 +148,6 @@ void removePiece(){
 
 void gameOver(){
     setGameState(STATE_GAME_OVER);
-    
-    // TODO submit highscore??
-    System.out.printf("%d 0%n", p1.score*p1.level);
 }
 
 boolean checkCollision(){
@@ -288,4 +287,23 @@ void setFillBlock(int color_int){
 	fill(ORANGE);
 	break;
     }
+}
+
+// initialize global variables
+void initialize(){
+    
+    SCREEN_W = displayWidth;
+    SCREEN_H = displayHeight;
+    
+    // atomic constants (important & affect gameplay)
+    GRID_W = 10; // game grid block count (width)
+    GRID_H = 22; // game grid block count (height) top 2 rows not drawn!
+
+    // compound constants (magic)
+    SPACING = SCREEN_W/25;
+    GRID_SIZE = (SCREEN_H - (SPACING*2))/(GRID_H-2);
+    P1_PANEL_X = (2*SPACING) + GRID_SIZE*GRID_W;
+    P1_PANEL_Y = SCREEN_H*((float) 2/3);
+    P1_NEXT_PANEL_X = P1_PANEL_X;
+    P1_NEXT_PANEL_Y = SCREEN_H*((float) 1/3);
 }
