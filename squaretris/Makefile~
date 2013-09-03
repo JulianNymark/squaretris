@@ -1,4 +1,0 @@
-all:
-	$(HOME)/Software/processing-2.0b9/processing-java \
-	--sketch=$(CURDIR) \
-	--output=$(CURDIR)/output-java/ --force --run
