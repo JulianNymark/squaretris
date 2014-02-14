@@ -13,74 +13,97 @@ void drawGame(){
     background(100);
   
     // draw grid
-    game_grid.draw(); // draw grid -> grid's buffer
-    image(game_grid.pg, SPACING, SPACING); // draw grid's buffer
+    p1.game_grid.draw(); // draw grid -> grid's buffer
+    image(p1.game_grid.pg, P1_GRID_X, P1_GRID_Y); // draw grid's buffer
     
-    // DEBUG FPS counter
-    text("FPS: " + int(frameRate), 10, 20);
-
-    // draw player 1 info panel
+    // draw player info panel
     p1.draw_panel();
-    image(p1.panel, P1_PANEL_X, P1_PANEL_Y);
+    image(p1.score_panel, P1_PANEL_X, P1_PANEL_Y);
     
     // draw next piece
     p1.draw_next_panel();
     image(p1.next_panel, P1_NEXT_PANEL_X, P1_NEXT_PANEL_Y);
+
+    if (player_count == 2) {
+	// draw grid
+	p2.game_grid.draw(); // draw grid -> grid's buffer
+	image(p2.game_grid.pg, P2_GRID_X, P2_GRID_Y);
+
+	// draw player info panel
+	p2.draw_panel();
+	image(p2.score_panel, P2_PANEL_X, P2_PANEL_Y);
+    
+	// draw next piece
+	p2.draw_next_panel();
+	image(p2.next_panel, P2_NEXT_PANEL_X, P2_NEXT_PANEL_Y);
+    }
+    
+    // DEBUG FPS counter
+    text("FPS: " + int(frameRate), 10, 20);
 }
 
 void inputGame(){
     if (key == CODED) {
 	// arrow keys are CODED
 	switch (keyCode) {
-	case P2_UP:
+	case P1_UP:
+	    p1.dropPiece();
 	    break;
-	case P2_DOWN:
+	case P1_DOWN:
+	    p1.movePiece('d');
 	    break;
-	case P2_LEFT:
+	case P1_LEFT:
+	    p1.movePiece('l');
 	    break;
-	case P2_RIGHT:
+	case P1_RIGHT:
+	    p1.movePiece('r');
 	    break;
 	}
     }
 
     switch (key) {
     case START_BUTTON:
+	exit();
 	break;
-    case ENTER:
     case SELECT_BUTTON:
+    case ENTER:
+	exit();
 	break;
     case P1_ROTATE_LEFT:
-	rotatePiece('l');
+	p1.rotatePiece('l');
 	break;
     case P1_ROTATE_RIGHT:
-	rotatePiece('r');
+	p1.rotatePiece('r');
 	break;
     case P1_DROP:
-	dropPiece();
+	p1.dropPiece();
 	break;
     case P1_EXTRA_BUTTON:
-	// p1.level += 1; // DEBUG
+	p1.level += 1; // DEBUG
 	break;
-    case P1_UP:
-	// movePiece('u'); // DEBUG
-	dropPiece();
+    case P2_UP:
+	p2.dropPiece();
 	break;
-    case P1_DOWN:
-	movePiece('d');
+    case P2_DOWN:
+	p2.movePiece('d');
 	break;
-    case P1_LEFT:
-	movePiece('l');
+    case P2_LEFT:
+	p2.movePiece('l');
 	break;
-    case P1_RIGHT:
-	movePiece('r');
+    case P2_RIGHT:
+	p2.movePiece('r');
 	break;
     case P2_ROTATE_LEFT:
+	p2.rotatePiece('l');
 	break;
     case P2_ROTATE_RIGHT:
+	p2.rotatePiece('r');
 	break;
     case P2_DROP:
+	p2.dropPiece();
 	break;
     case P2_EXTRA_BUTTON:
+	p2.level += 1; // DEBUG
 	break;
     }
 }

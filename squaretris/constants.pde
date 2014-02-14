@@ -11,10 +11,19 @@ int GRID_H; // game grid block count (height) top 2 rows not drawn!
 
 // compound constants (magic)
 int GRID_SIZE;
+float P1_GRID_X;
+float P1_GRID_Y;
 float P1_PANEL_X;
 float P1_PANEL_Y;
 float P1_NEXT_PANEL_X;
 float P1_NEXT_PANEL_Y;
+
+float P2_GRID_X;
+float P2_GRID_Y;
+float P2_PANEL_X;
+float P2_PANEL_Y;
+float P2_NEXT_PANEL_X;
+float P2_NEXT_PANEL_Y;
 
 // colors
 final color CYAN = color(200,255,255);

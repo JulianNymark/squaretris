@@ -1,8 +1,8 @@
 class GameGrid {
     PGraphics pg; // game grid's buffer
     int[][] grid;
-  
-    GameGrid(){
+
+    GameGrid( int player_id ){
 	grid = new int[GRID_W][GRID_H];
 	pg = createGraphics((GRID_W*GRID_SIZE) + 1,
 			    ((GRID_H-2)*GRID_SIZE) + 1);

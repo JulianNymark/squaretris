@@ -32,6 +32,9 @@ void initMainMenu(){
     b_vel = random(1, 2);
 }
 
+
+String[] menu_text = { "1 Player", "2 Player",  "Exit" };
+
 void drawMainMenu(){
     if (init_state) {
 	initMainMenu();
@@ -42,7 +45,6 @@ void drawMainMenu(){
     drawColorBG();
     
     // menu selection text
-    String[] menu_text = { "Start game", "Exit" };
     textAlign(LEFT, CENTER);
     fill(255-r,255-g,255-b);
     int t_size = SCREEN_H/(menu_text.length*4);
@@ -52,6 +54,7 @@ void drawMainMenu(){
     //line(SCREEN_W/2, 0, SCREEN_W/2, SCREEN_H);
     textSize(t_size);
 
+    // indent text
     for (int i=0; i<menu_text.length; ++i) {
 	if (menu_selection == i) {
 	    text(menu_text[i], t_x + (GRID_SIZE*2), t_y+i*t_size);
@@ -74,7 +77,7 @@ void drawMainMenu(){
 	time_new_piece = now;
     }
     
-    drawPiece(menu_piece, t_x-(2*GRID_SIZE),
+    drawPiece(menu_piece, t_x-(3*GRID_SIZE),
 	      (t_y+menu_selection*t_size)-(2*GRID_SIZE));
 }
 
@@ -82,22 +85,32 @@ void inputMainMenu(){
     if (key == CODED) {
 	// arrow keys are coded keys (CODED)
 	switch (keyCode) {
-	case P2_UP:
+	case P1_UP:
+	    menu_selection -= 1;
+	    if(menu_selection < 0){
+		menu_selection = menu_text.length -1;
+	    }
 	    break;
-	case P2_DOWN:
+	case P1_DOWN:
+	    menu_selection += 1;
+	    if(menu_selection > menu_text.length-1){
+		menu_selection = 0;
+	    }
 	    break;
-	case P2_LEFT:
+	case P1_LEFT:
 	    break;
-	case P2_RIGHT:
+	case P1_RIGHT:
 	    break;
 	}
     }
 
     switch (key) {
     case START_BUTTON:
+	exit();
 	break;
-    case ENTER:
     case SELECT_BUTTON:
+    case ENTER:
+	exit();
 	break;
     case P1_ROTATE_LEFT:
     case P1_ROTATE_RIGHT:
@@ -105,30 +118,20 @@ void inputMainMenu(){
     case P1_EXTRA_BUTTON:
 	switch(menu_selection){
 	case 0:
-	    // start the game!
-	    thread("update"); // start the physics & update thread
+	    player_count = 1;
 	    setGameState(STATE_GAME);
+	    (new Thread(p1)).start();
 	    break;
 	case 1:
+	    player_count = 2;
+	    setGameState(STATE_GAME);
+	    (new Thread(p1)).start();
+	    (new Thread(p2)).start();
+	    break;
+	case 3:
 	    exit();
 	    break;
 	}
-	break;
-    case P1_UP:
-	menu_selection += 1;
-	if(menu_selection > menu_selections-1){
-	    menu_selection = 0;
-	}
-	break;
-    case P1_DOWN:
-	menu_selection -= 1;
-	if(menu_selection < 0){
-	    menu_selection = menu_selections-1;
-	}
-	break;
-    case P1_LEFT:
-	break;
-    case P1_RIGHT:
 	break;
     case P2_ROTATE_LEFT:
 	break;

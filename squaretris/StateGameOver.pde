@@ -52,9 +52,11 @@ void inputGameOver(){
 
     switch (key) {
     case START_BUTTON:
+	exit();
 	break;
-    case ENTER:
     case SELECT_BUTTON:
+    case ENTER:
+	exit();
 	break;
     case P1_ROTATE_LEFT:
 	break;
@@ -96,7 +98,7 @@ void draw_summary(){
     score_summary.fill(255);
     score_summary.textSize(30);
     score_summary.textAlign(LEFT, TOP);
-    score_summary.text("SCORE: " + p1.score, 0, 0);
+    score_summary.text("LINES: " + p1.lines, 0, 0);
     score_summary.text("LEVEL MULTIPLIER: x" + p1.level, 0, 40);
     score_summary.stroke(255);
     score_summary.line(0,80,(SCREEN_W/3)-SPACING,80);
