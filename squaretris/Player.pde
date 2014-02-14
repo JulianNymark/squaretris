@@ -18,7 +18,10 @@ class Player implements Runnable{
     // players gamegrid
     GameGrid game_grid;
 
+    boolean isAlive;
+
     Player(int i){
+	isAlive = true;
 	
 	id = i;
 
@@ -232,13 +235,13 @@ class Player implements Runnable{
 	}
     
 	// score calculation
-	scoreCalc(lines_done);
+	scoreAdd(lines_done);
     
 	// get new piece
 	newPiece();
     }
 
-    void scoreCalc(int lines_done){
+    void scoreAdd(int lines_done){
 	if (lines_done > 0) {
 	    // lines & score ++
 	    score += (lines_done * lines_done);
@@ -270,7 +273,12 @@ class Player implements Runnable{
     
 	// if collide on new piece = game over
 	if (checkCollision()){
-	    gameOver();
+	    isAlive = false;
+	    dead_players +=1;
+
+	    if (dead_players >= player_count) {
+		gameOver();
+	    }
 	    return;
 	}
     
@@ -283,7 +291,7 @@ class Player implements Runnable{
  * separating the draw loop from 'game-time'
  */
     public void run(){
-	while (game_state == STATE_GAME) {
+	while (isAlive) {
 	    // sleep game tick (based on level)
 	    try{
 		Thread.sleep(1000/level);
@@ -295,5 +303,9 @@ class Player implements Runnable{
 	    // move piece 1 place down
 	    movePiece('d');
 	}
+    }
+
+    int finalScore(){
+	return level*score;
     }
 }

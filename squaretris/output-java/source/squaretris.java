@@ -21,6 +21,7 @@ int game_state; // 0 = main_menu, 1 = game, 2 = game_over
 boolean init_state; // set when changing state!
 
 int player_count;
+int dead_players;
 
 public void setup(){
     initialize();
@@ -36,6 +37,7 @@ public void setup(){
     p2 = new Player(1);
     p2.addPiece();
 
+    dead_players = 0;
 }
 
 public void draw(){
@@ -331,7 +333,10 @@ class Player implements Runnable{
     // players gamegrid
     GameGrid game_grid;
 
+    boolean isAlive;
+
     Player(int i){
+	isAlive = true;
 	
 	id = i;
 
@@ -545,13 +550,13 @@ class Player implements Runnable{
 	}
     
 	// score calculation
-	scoreCalc(lines_done);
+	scoreAdd(lines_done);
     
 	// get new piece
 	newPiece();
     }
 
-    public void scoreCalc(int lines_done){
+    public void scoreAdd(int lines_done){
 	if (lines_done > 0) {
 	    // lines & score ++
 	    score += (lines_done * lines_done);
@@ -583,7 +588,12 @@ class Player implements Runnable{
     
 	// if collide on new piece = game over
 	if (checkCollision()){
-	    gameOver();
+	    isAlive = false;
+	    dead_players +=1;
+
+	    if (dead_players >= player_count) {
+		gameOver();
+	    }
 	    return;
 	}
     
@@ -596,7 +606,7 @@ class Player implements Runnable{
  * separating the draw loop from 'game-time'
  */
     public void run(){
-	while (game_state == STATE_GAME) {
+	while (isAlive) {
 	    // sleep game tick (based on level)
 	    try{
 		Thread.sleep(1000/level);
@@ -608,6 +618,10 @@ class Player implements Runnable{
 	    // move piece 1 place down
 	    movePiece('d');
 	}
+    }
+
+    public int finalScore(){
+	return level*score;
     }
 }
 public void initGame(){
@@ -656,67 +670,76 @@ public void drawGame(){
 
 public void inputGame(){
     if (key == CODED) {
-	// arrow keys are CODED
-	switch (keyCode) {
-	case P1_UP:
+	if (p1.isAlive) {
+	    // arrow keys are CODED
+	    switch (keyCode) {
+	    case P1_UP:
+		p1.dropPiece();
+		break;
+	    case P1_DOWN:
+		p1.movePiece('d');
+		break;
+	    case P1_LEFT:
+		p1.movePiece('l');
+		break;
+	    case P1_RIGHT:
+		p1.movePiece('r');
+		break;
+	    }
+	}
+    }
+    
+    if (p1.isAlive) {
+	switch (key) {
+	case START_BUTTON:
+	    exit();
+	    break;
+	case SELECT_BUTTON:
+	case ENTER:
+	    exit();
+	    break;
+	case P1_ROTATE_LEFT:
+	    p1.rotatePiece('l');
+	    break;
+	case P1_ROTATE_RIGHT:
+	    p1.rotatePiece('r');
+	    break;
+	case P1_DROP:
 	    p1.dropPiece();
 	    break;
-	case P1_DOWN:
-	    p1.movePiece('d');
-	    break;
-	case P1_LEFT:
-	    p1.movePiece('l');
-	    break;
-	case P1_RIGHT:
-	    p1.movePiece('r');
+	case P1_EXTRA_BUTTON:
+	    p1.level += 1; // DEBUG
 	    break;
 	}
     }
-
-    switch (key) {
-    case START_BUTTON:
-	exit();
-	break;
-    case SELECT_BUTTON:
-    case ENTER:
-	exit();
-	break;
-    case P1_ROTATE_LEFT:
-	p1.rotatePiece('l');
-	break;
-    case P1_ROTATE_RIGHT:
-	p1.rotatePiece('r');
-	break;
-    case P1_DROP:
-	p1.dropPiece();
-	break;
-    case P1_EXTRA_BUTTON:
-	p1.level += 1; // DEBUG
-	break;
-    case P2_UP:
-	p2.dropPiece();
-	break;
-    case P2_DOWN:
-	p2.movePiece('d');
-	break;
-    case P2_LEFT:
-	p2.movePiece('l');
-	break;
-    case P2_RIGHT:
-	p2.movePiece('r');
-	break;
-    case P2_ROTATE_LEFT:
-	p2.rotatePiece('l');
-	break;
-    case P2_ROTATE_RIGHT:
-	p2.rotatePiece('r');
-	break;
-    case P2_DROP:
-	p2.dropPiece();
-	break;
-    case P2_EXTRA_BUTTON:
-	p2.level += 1; // DEBUG
-	break;
+    if (p2.isAlive) {
+	switch (key) {
+	case P2_UP:
+	    p2.dropPiece();
+	    break;
+	case P2_DOWN:
+	    p2.movePiece('d');
+	    break;
+	case P2_LEFT:
+	    p2.movePiece('l');
+	    break;
+	case P2_RIGHT:
+	    p2.movePiece('r');
+	    break;
+	case P2_ROTATE_LEFT:
+	    p2.rotatePiece('l');
+	    break;
+	case P2_ROTATE_RIGHT:
+	    p2.rotatePiece('r');
+	    break;
+	case P2_DROP:
+	    p2.dropPiece();
+	    break;
+	case P2_EXTRA_BUTTON:
+	    p2.level += 1; // DEBUG
+	    break;
+	
+	}
     }
 }
 PGraphics score_summary;
@@ -787,7 +810,7 @@ public void inputGameOver(){
 	break;
     case P1_EXTRA_BUTTON:
 	// submit highscore
-	System.out.printf("%d 0%n", p1.score*p1.level);
+	System.out.printf("%d %d%n", p1.finalScore(), p2.finalScore());
 	exit();
 	break;
     case P1_UP:
@@ -805,6 +828,9 @@ public void inputGameOver(){
     case P2_DROP:
 	break;
     case P2_EXTRA_BUTTON:
+	// submit highscore
+	System.out.printf("%d %d%n", p1.finalScore(), p2.finalScore());
+	exit();
 	break;
     }
 }
@@ -816,16 +842,32 @@ public void draw_summary(){
     score_summary.fill(0);
     score_summary.rect(0,0,SCREEN_W/2, SCREEN_H/2);
 
+
+    score_summary.stroke(255);
+    score_summary.line(0,80,SCREEN_W/2,80);
+
     score_summary.fill(255);
     score_summary.textSize(30);
     score_summary.textAlign(LEFT, TOP);
     score_summary.text("LINES: " + p1.lines, 0, 0);
     score_summary.text("LEVEL MULTIPLIER: x" + p1.level, 0, 40);
-    score_summary.stroke(255);
-    score_summary.line(0,80,(SCREEN_W/3)-SPACING,80);
-    score_summary.text("FINAL SCORE: " + p1.score*(p1.level), 0, 90);
+    score_summary.text(p1.score*(p1.level), 0, 90);
     score_summary.textAlign(RIGHT, BOTTOM);
     score_summary.text("press green to exit!", SCREEN_W/2, SCREEN_H/2);
+    
+    if (player_count == 2) {
+	score_summary.textAlign(LEFT, TOP);
+    
+	score_summary.line(SCREEN_W/4 , 0, SCREEN_W/4, SCREEN_H/2);
+
+	score_summary.text("LINES: " + p2.lines, SCREEN_W/4+SPACING, 0);
+	score_summary.text("LEVEL MULTIPLIER: x" + p2.level, SCREEN_W/4+SPACING, 40);
+	score_summary.stroke(255);
+	score_summary.text(p2.score*(p2.level), SCREEN_W/4+SPACING, 90);
+	score_summary.textAlign(RIGHT, BOTTOM);
+	score_summary.text("press green to exit!", SCREEN_W/2, SCREEN_H/2);
+    }
+
     score_summary.endDraw();
 }
 float r, g, b;

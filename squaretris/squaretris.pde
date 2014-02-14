@@ -5,6 +5,7 @@ int game_state; // 0 = main_menu, 1 = game, 2 = game_over
 boolean init_state; // set when changing state!
 
 int player_count;
+int dead_players;
 
 void setup(){
     initialize();
@@ -20,6 +21,7 @@ void setup(){
     p2 = new Player(1);
     p2.addPiece();
 
+    dead_players = 0;
 }
 
 void draw(){
