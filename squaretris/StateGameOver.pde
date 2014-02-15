@@ -39,13 +39,13 @@ void inputGameOver(){
     if (key == CODED) {
 	// arrow keys are CODED
 	switch (keyCode) {
-	case P2_UP:
+	case P1_UP:
 	    break;
-	case P2_DOWN:
+	case P1_DOWN:
 	    break;
-	case P2_LEFT:
+	case P1_LEFT:
 	    break;
-	case P2_RIGHT:
+	case P1_RIGHT:
 	    break;
 	}
     }
@@ -69,13 +69,13 @@ void inputGameOver(){
 	System.out.printf("%d %d%n", p1.finalScore(), p2.finalScore());
 	exit();
 	break;
-    case P1_UP:
+    case P2_UP:
 	break;
-    case P1_DOWN:
+    case P2_DOWN:
 	break;
-    case P1_LEFT:
+    case P2_LEFT:
 	break;
-    case P1_RIGHT:
+    case P2_RIGHT:
 	break;
     case P2_ROTATE_LEFT:
 	break;

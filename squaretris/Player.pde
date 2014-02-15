@@ -154,7 +154,7 @@ class Player implements Runnable{
 	    break;
 	}
 
-// add current piece at its new location -> grid
+	// add current piece at its new location -> grid
 	addPiece();
     }
 
