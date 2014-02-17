@@ -670,20 +670,20 @@ public void drawGame(){
 
 public void inputGame(){
     if (key == CODED) {
-	if (p1.isAlive) {
+	if (p2.isAlive) {
 	    // arrow keys are CODED
 	    switch (keyCode) {
-	    case P1_UP:
-		p1.dropPiece();
+	    case P2_UP:
+		p2.dropPiece();
 		break;
-	    case P1_DOWN:
-		p1.movePiece('d');
+	    case P2_DOWN:
+		p2.movePiece('d');
 		break;
-	    case P1_LEFT:
-		p1.movePiece('l');
+	    case P2_LEFT:
+		p2.movePiece('l');
 		break;
-	    case P1_RIGHT:
-		p1.movePiece('r');
+	    case P2_RIGHT:
+		p2.movePiece('r');
 		break;
 	    }
 	}
@@ -691,6 +691,18 @@ public void inputGame(){
     
     if (p1.isAlive) {
 	switch (key) {
+	case P1_UP:
+	    p1.dropPiece();
+	    break;
+	case P1_DOWN:
+	    p1.movePiece('d');
+	    break;
+	case P1_LEFT:
+	    p1.movePiece('l');
+	    break;
+	case P1_RIGHT:
+	    p1.movePiece('r');
+	    break;
 	case START_BUTTON:
 	    exit();
 	    break;
@@ -714,18 +726,6 @@ public void inputGame(){
     }
     if (p2.isAlive) {
 	switch (key) {
-	case P2_UP:
-	    p2.dropPiece();
-	    break;
-	case P2_DOWN:
-	    p2.movePiece('d');
-	    break;
-	case P2_LEFT:
-	    p2.movePiece('l');
-	    break;
-	case P2_RIGHT:
-	    p2.movePiece('r');
-	    break;
 	case P2_ROTATE_LEFT:
 	    p2.rotatePiece('l');
 	    break;
@@ -783,13 +783,13 @@ public void inputGameOver(){
     if (key == CODED) {
 	// arrow keys are CODED
 	switch (keyCode) {
-	case P1_UP:
+	case P2_UP:
 	    break;
-	case P1_DOWN:
+	case P2_DOWN:
 	    break;
-	case P1_LEFT:
+	case P2_LEFT:
 	    break;
-	case P1_RIGHT:
+	case P2_RIGHT:
 	    break;
 	}
     }
@@ -813,13 +813,13 @@ public void inputGameOver(){
 	System.out.printf("%d %d%n", p1.finalScore(), p2.finalScore());
 	exit();
 	break;
-    case P2_UP:
+    case P1_UP:
 	break;
-    case P2_DOWN:
+    case P1_DOWN:
 	break;
-    case P2_LEFT:
+    case P1_LEFT:
 	break;
-    case P2_RIGHT:
+    case P1_RIGHT:
 	break;
     case P2_ROTATE_LEFT:
 	break;
@@ -954,29 +954,24 @@ public void drawMainMenu(){
 }
 
 public void inputMainMenu(){
-    if (key == CODED) {
-	// arrow keys are coded keys (CODED)
-	switch (keyCode) {
-	case P1_UP:
-	    menu_selection -= 1;
-	    if(menu_selection < 0){
-		menu_selection = menu_text.length -1;
-	    }
-	    break;
-	case P1_DOWN:
-	    menu_selection += 1;
-	    if(menu_selection > menu_text.length-1){
-		menu_selection = 0;
-	    }
-	    break;
-	case P1_LEFT:
-	    break;
-	case P1_RIGHT:
-	    break;
-	}
-    }
-
     switch (key) {
+    case P1_UP:
+	menu_selection -= 1;
+	if(menu_selection < 0){
+	    menu_selection = menu_text.length -1;
+	}
+	break;
+    case P1_DOWN:
+	menu_selection += 1;
+	if(menu_selection > menu_text.length-1){
+	    menu_selection = 0;
+	}
+	break;
+    case P1_LEFT:
+	break;
+    case P1_RIGHT:
+	break;
+
     case START_BUTTON:
 	exit();
 	break;
@@ -1082,24 +1077,24 @@ final char[] possible_pieces = {'o','i','s','z','l','j','t'};
 // keys and controls!
 
 // player 1
-final char P1_UP = UP; // ARROW_UP
-final char P1_DOWN = DOWN; // ARROW_DOWN
-final char P1_LEFT = LEFT; // ARROW_LEFT
-final char P1_RIGHT = RIGHT; // ARROW_RIGHT
-final char P1_ROTATE_LEFT = 'o';
-final char P1_ROTATE_RIGHT = 'p';
-final char P1_DROP = 'k';
-final char P1_EXTRA_BUTTON = 'l';
+final char P1_UP = 'w';
+final char P1_DOWN = 's';
+final char P1_LEFT = 'a';
+final char P1_RIGHT = 'd';
+final char P1_ROTATE_LEFT = 'r';
+final char P1_ROTATE_RIGHT = 't';
+final char P1_DROP = 'f';
+final char P1_EXTRA_BUTTON = 'g';
 
 // player 2
-final char P2_UP = 'w';
-final char P2_DOWN = 's';
-final char P2_LEFT = 'a';
-final char P2_RIGHT = 'd';
-final char P2_ROTATE_LEFT = 'r';
-final char P2_ROTATE_RIGHT = 't';
-final char P2_DROP = 'f';
-final char P2_EXTRA_BUTTON = 'g';
+final char P2_UP = UP; // ARROW_UP
+final char P2_DOWN = DOWN; // ARROW_DOWN
+final char P2_LEFT = LEFT; // ARROW_LEFT
+final char P2_RIGHT = RIGHT; // ARROW_RIGHT
+final char P2_ROTATE_LEFT = 'o';
+final char P2_ROTATE_RIGHT = 'p';
+final char P2_DROP = 'k';
+final char P2_EXTRA_BUTTON = 'l';
 
 // other buttons
 final char START_BUTTON = ' ';

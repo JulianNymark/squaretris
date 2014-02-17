@@ -39,13 +39,13 @@ void inputGameOver(){
     if (key == CODED) {
 	// arrow keys are CODED
 	switch (keyCode) {
-	case P1_UP:
+	case P2_UP:
 	    break;
-	case P1_DOWN:
+	case P2_DOWN:
 	    break;
-	case P1_LEFT:
+	case P2_LEFT:
 	    break;
-	case P1_RIGHT:
+	case P2_RIGHT:
 	    break;
 	}
     }
@@ -69,13 +69,13 @@ void inputGameOver(){
 	System.out.printf("%d %d%n", p1.finalScore(), p2.finalScore());
 	exit();
 	break;
-    case P2_UP:
+    case P1_UP:
 	break;
-    case P2_DOWN:
+    case P1_DOWN:
 	break;
-    case P2_LEFT:
+    case P1_LEFT:
 	break;
-    case P2_RIGHT:
+    case P1_RIGHT:
 	break;
     case P2_ROTATE_LEFT:
 	break;
@@ -105,7 +105,7 @@ void draw_summary(){
     score_summary.fill(255);
     score_summary.textSize(30);
     score_summary.textAlign(LEFT, TOP);
-    score_summary.text("LINES: " + p1.lines, 0, 0);
+    score_summary.text("SCORE: " + p1.score, 0, 0);
     score_summary.text("LEVEL MULTIPLIER: x" + p1.level, 0, 40);
     score_summary.text(p1.score*(p1.level), 0, 90);
     score_summary.textAlign(RIGHT, BOTTOM);
@@ -116,7 +116,7 @@ void draw_summary(){
     
 	score_summary.line(SCREEN_W/4 , 0, SCREEN_W/4, SCREEN_H/2);
 
-	score_summary.text("LINES: " + p2.lines, SCREEN_W/4+SPACING, 0);
+	score_summary.text("SCORE: " + p2.score, SCREEN_W/4+SPACING, 0);
 	score_summary.text("LEVEL MULTIPLIER: x" + p2.level, SCREEN_W/4+SPACING, 40);
 	score_summary.stroke(255);
 	score_summary.text(p2.score*(p2.level), SCREEN_W/4+SPACING, 90);

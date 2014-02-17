@@ -82,29 +82,24 @@ void drawMainMenu(){
 }
 
 void inputMainMenu(){
-    if (key == CODED) {
-	// arrow keys are coded keys (CODED)
-	switch (keyCode) {
-	case P1_UP:
-	    menu_selection -= 1;
-	    if(menu_selection < 0){
-		menu_selection = menu_text.length -1;
-	    }
-	    break;
-	case P1_DOWN:
-	    menu_selection += 1;
-	    if(menu_selection > menu_text.length-1){
-		menu_selection = 0;
-	    }
-	    break;
-	case P1_LEFT:
-	    break;
-	case P1_RIGHT:
-	    break;
-	}
-    }
-
     switch (key) {
+    case P1_UP:
+	menu_selection -= 1;
+	if(menu_selection < 0){
+	    menu_selection = menu_text.length -1;
+	}
+	break;
+    case P1_DOWN:
+	menu_selection += 1;
+	if(menu_selection > menu_text.length-1){
+	    menu_selection = 0;
+	}
+	break;
+    case P1_LEFT:
+	break;
+    case P1_RIGHT:
+	break;
+
     case START_BUTTON:
 	exit();
 	break;
